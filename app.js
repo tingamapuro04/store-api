@@ -14,9 +14,9 @@ app.use("/api/v1/products", router);
 mongoose.connect(DATABAZE_URL)
   .then(() => {
     app.listen(PORT, () => {
-      console.log('App is up and running')
+      console.log('App is up and running now')
     })
   })
   .catch((error) => {
-    console.log(error);
+    handleError(error);
   })
