@@ -9,6 +9,20 @@ const getAllProducts = async (req, res) => {
   }
 }
 
+const getProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    if (!product){
+      res.status(404).json({msg: 'No product with that id'});
+      return;
+    }
+    res.status(200).json({msg: "Success", data: product});
+  } catch (error) {
+    res.status(500).json({msg: error.message});
+  }
+}
+
 const postProduct = async (req, res) => {
   try {
     const { body } = req;
