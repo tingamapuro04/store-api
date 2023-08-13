@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const router = require("./Routes/routes");
+const errorHandler = require("./Middlewares/errorHandler");
+//require('./Middlewares/errorHandler');
 
 const app = express();
 const { DATABAZE_URL, PORT } = process.env;
@@ -18,5 +20,8 @@ mongoose.connect(DATABAZE_URL)
     })
   })
   .catch((error) => {
-    handleError(error);
+    console.log('Database connection error: ', error);
+    process.exit(1);
   })
+
+  app.use(errorHandler);
