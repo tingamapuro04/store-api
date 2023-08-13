@@ -1,8 +1,23 @@
 const Product = require('../Models/ProductModel');
 
 const getAllProducts = async (req, res) => {
+  let allproducts;
+  let query = {};
   try {
-    const allproducts = await Product.find({});
+    // Filtering using the category
+    const { category, minPrice, maxPrice } = req.query;
+    if (category) {
+      query.category = category
+    }
+
+    if (minPrice && !isNaN(Number(minPrice))) {
+      query.price = { $gte: Number(minPrice) };
+    }
+    if (maxPrice && !isNaN(Number(maxPrice))) {
+      query.price = query.price || {};
+      query.price.$lte = Number(maxPrice);
+    }
+    allproducts = await Product.find(query).sort({price: -1});
     res.status(200).json({msg: 'Success on all the products', data: allproducts});
   } catch (error) {
     res.status(500).json({msg: error.message});

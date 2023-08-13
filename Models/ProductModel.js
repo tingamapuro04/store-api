@@ -4,11 +4,18 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
   name: String,
   quantity: Number,
-  price: Number,
-  date_created: {
-    type: Date,
-    default: () => (new Date()) // set the current time as a default value for this field when creating an entry in MongoDB.
-  }
+  price: Number
+},
+{
+  timestamps: true
 })
+productSchema.add({ category: {
+  type: String,
+  enum: {
+    values: ['Fashion', 'Plumbing', 'Kitchen', 'Construction'],
+    message: '{VALUE} is not supported!'
+  }
+}});
+
 
 module.exports = mongoose.model('Product', productSchema);
